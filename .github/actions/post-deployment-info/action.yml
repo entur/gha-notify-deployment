@@ -20,6 +20,9 @@ inputs:
     description: "Commit SHA"
     required: false
     default: ${{ github.sha }}
+  dummy:
+    description: "Dummy input to trigger workflow dispatch"
+    required: false
 
 runs:
   using: "composite"
