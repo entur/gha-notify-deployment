@@ -1,0 +1,44 @@
+name: ci
+run-name: Verifying commit ${{ github.sha }} on branch ${{ github.ref_name }}
+
+on:
+  push:
+    branches:
+      - main
+  pull_request:
+  pull_request_review:
+    types: [submitted]
+
+jobs:
+  verify-pr:
+    name: Verify PR
+    if: ${{ github.event_name == 'pull_request' }}
+    uses: entur/gha-meta/.github/workflows/verify-pr.yml@v1
+
+  test:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+
+      - name: Start mock HTTP server
+        run: python3 testscripts/mock_server.py &
+
+      - name: Run action against mock server
+        uses: ./.github/actions/post-deployment-info
+        with:
+          webhook-url: http://localhost:8080
+          webhook-key: test-key
+          repo: test-org/test-repo
+          branch: test-branch
+          commit-sha: abc123def456
+
+      - name: Validate captured request
+        run: python3 testscripts/validate.py
+
+  update-post-deployment-info-doc:
+    needs:
+      - verify-pr
+    uses: entur/gha-meta/.github/workflows/auto-doc.yml@v1
+    with:
+      workflow_file: .github/actions/post-deployment-info/action.yml
+      readme_file: README-post.md

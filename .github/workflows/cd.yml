@@ -1,0 +1,16 @@
+name: release
+run-name: Releasing version ${{ github.ref_name }} based on commit ${{ github.sha }}
+
+on:
+  push:
+    branches:
+      - main
+
+permissions:
+  contents: write
+  pull-requests: write
+  issues: write
+
+jobs:
+  release:
+    uses: entur/gha-meta/.github/workflows/release.yml@v1

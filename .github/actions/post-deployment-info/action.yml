@@ -1,0 +1,49 @@
+name: "Post Deployment Info"
+description: "Sends a deployment notification to a configured webhook endpoint"
+
+inputs:
+  webhook-url:
+    description: "Webhook endpoint URL (pass org secret WEBHOOK_URL)"
+    required: true
+  webhook-key:
+    description: "Webhook authentication key (pass org secret WEBHOOK_KEY)"
+    required: true
+  repo:
+    description: "Repository (owner/repo)"
+    required: false
+    default: ${{ github.repository }}
+  branch:
+    description: "Branch name"
+    required: false
+    default: ${{ github.ref_name }}
+  commit-sha:
+    description: "Commit SHA"
+    required: false
+    default: ${{ github.sha }}
+
+runs:
+  using: "composite"
+  steps:
+    - name: Send deployment notification
+      shell: bash
+      env:
+        WEBHOOK_URL: ${{ inputs.webhook-url }}
+        WEBHOOK_KEY: ${{ inputs.webhook-key }}
+        REPO: ${{ inputs.repo }}
+        BRANCH: ${{ inputs.branch }}
+        COMMIT_SHA: ${{ inputs.commit-sha }}
+      run: |
+        payload=$(jq -n \
+          --arg kind       "deployed" \
+          --arg repo       "$REPO" \
+          --arg branch     "$BRANCH" \
+          --arg commitSHA  "$COMMIT_SHA" \
+          '{kind: $kind, repo: $repo, branch: $branch, commitSHA: $commitSHA}')
+
+        response=$(curl -sS -w "\nHTTP status: %{http_code}" -X POST \
+          -H "Content-Type: application/json" \
+          -H "webhook-key: $WEBHOOK_KEY" \
+          -d "$payload" \
+          "$WEBHOOK_URL" 2>&1) || true
+
+        echo "$response"
