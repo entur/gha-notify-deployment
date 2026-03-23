@@ -41,4 +41,4 @@ jobs:
     uses: entur/gha-meta/.github/workflows/auto-doc.yml@v1
     with:
       workflow_file: .github/actions/post-deployment-info/action.yml
-      readme_file: README-post.md
+      readme_file: README-post-deployment-info.md
