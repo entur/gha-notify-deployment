@@ -1,5 +1,5 @@
 name: release
-run-name: Releasing version ${{ github.ref_name }} based on commit ${{ github.sha }}
+run-name: Releasing ${{ github.ref_name }} based on commit ${{ github.sha }}
 
 on:
   push:
