@@ -21,16 +21,7 @@ Sends a deployment notification to a configured webhook endpoint after a success
 ## Inputs
 
 <!-- AUTO-DOC-INPUT:START - Do not remove or modify this section -->
-
-|    INPUT    |  TYPE  | REQUIRED |           DEFAULT            |                         DESCRIPTION                         |
-|-------------|--------|----------|------------------------------|-------------------------------------------------------------|
-|   branch    | string |  false   |  `"${{ github.ref_name }}"`  |                         Branch name                         |
-| commit-sha  | string |  false   |    `"${{ github.sha }}"`     |                         Commit SHA                          |
-|    dummy    | string |  false   |                              |          Dummy input to trigger workflow dispatch           |
-|    repo     | string |  false   | `"${{ github.repository }}"` |                   Repository (owner/repo)                   |
-| webhook-key | string |   true   |                              | Webhook authentication key (pass org secret<br>WEBHOOK_KEY) |
-| webhook-url | string |   true   |                              |    Webhook endpoint URL (pass org secret<br>WEBHOOK_URL)    |
-
+No inputs.
 <!-- AUTO-DOC-INPUT:END -->
 
 ## Outputs
