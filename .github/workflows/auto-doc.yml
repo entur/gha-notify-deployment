@@ -1,0 +1,48 @@
+name: auto-doc
+
+on:
+  workflow_call:
+    inputs:
+      action_file:
+        description: Path to the action file
+        type: string
+      readme_file:
+        description: Path to the output file
+        type: string
+      timeout_minutes:
+        description: "Job timeout in minutes"
+        type: number
+        default: 5
+jobs:
+  update-doc:
+    runs-on: ubuntu-24.04
+    timeout-minutes: ${{ inputs.timeout_minutes }}
+    permissions:
+      contents: write
+    steps:
+      - uses: actions/checkout@de0fac2e4500dabe0009e67214ff5f5447ce83dd # v6.0.2
+        with:
+          ref: ${{ github.event.pull_request.head.ref }}
+      - uses: tj-actions/auto-doc@b10ceedffd794ec29a8fa8700529f40c1b64a951 # v3.6.0
+        with:
+          filename: ${{ inputs.action_file }}
+          reusable: false
+          output: ${{ inputs.readme_file }}
+          use_code_blocks: true
+      - uses: tj-actions/verify-changed-files@a1c6acee9df209257a246f2cc6ae8cb6581c1edf # v20.0.4
+        id: verify-changed-files
+        with:
+          files: |
+            ${{ inputs.readme_file }}
+      - name: Printout changed files
+        if: steps.verify-changed-files.outputs.files_changed == 'true'
+        env:
+          CHANGED_FILES: ${{ steps.verify-changed-files.outputs.changed_files }}
+        run: |
+          echo "Changed files: $CHANGED_FILES"
+      - uses: EndBug/add-and-commit@a94899bca583c204427a224a7af87c02f9b325d5 # v9.1.4
+        if: steps.verify-changed-files.outputs.files_changed == 'true'
+        with:
+          message: "docs: Update workflow documentation"
+          add: ${{ inputs.readme_file }}
+          pull: "--ff-only"
