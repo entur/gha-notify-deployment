@@ -21,7 +21,39 @@ Sends a deployment notification to a configured webhook endpoint after a success
 ## Inputs
 
 <!-- AUTO-DOC-INPUT:START - Do not remove or modify this section -->
-No inputs.
+```yaml
+- uses: entur/gha-gitdailies@
+  id: gha-gitdailies
+  with:
+    # Branch name
+    # Type: string
+    # Default: "${{ github.ref_name }}"
+    branch: ''
+
+    # Commit SHA
+    # Type: string
+    # Default: "${{ github.sha }}"
+    commit-sha: ''
+
+    # Dummy input to trigger workflow 
+    # dispatch 
+    # Type: string
+    dummy: ''
+
+    # Repository (owner/repo)
+    # Type: string
+    # Default: "${{ github.repository }}"
+    repo: ''
+
+    # Webhook authentication key (pass org secret WEBHOOK_KEY) 
+    # Type: string
+    webhook-key: ''
+
+    # Webhook endpoint URL (pass org secret WEBHOOK_URL) 
+    # Type: string
+    webhook-url: ''
+
+```
 <!-- AUTO-DOC-INPUT:END -->
 
 ## Outputs
