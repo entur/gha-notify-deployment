@@ -1,12 +1,12 @@
 name: "Post Deployment Info"
-description: "Sends a deployment notification to a configured webhook endpoint"
+description: "Sends a deployment notification to a configured webhook endpoint."
 
 inputs:
   webhook-url:
-    description: "Webhook endpoint URL (pass org secret WEBHOOK_URL)"
+    description: "Webhook endpoint URL (pass org variable GITDAILIES_WEBHOOK_URL)"
     required: true
   webhook-key:
-    description: "Webhook authentication key (pass org secret WEBHOOK_KEY)"
+    description: "Webhook authentication key (pass org secret GITDAILIES_WEBHOOK_KEY)"
     required: true
   repo:
     description: "Repository (owner/repo)"
@@ -40,7 +40,7 @@ runs:
           --arg commitSHA  "$COMMIT_SHA" \
           '{kind: $kind, repo: $repo, branch: $branch, commitSHA: $commitSHA}')
 
-        response=$(curl -sS -w "\nHTTP status: %{http_code}" -X POST \
+        response=$(curl -sS -w --max-time 10 "\nHTTP status: %{http_code}" -X POST \
           -H "Content-Type: application/json" \
           -H "webhook-key: $WEBHOOK_KEY" \
           -d "$payload" \
