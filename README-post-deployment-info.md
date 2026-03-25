@@ -32,7 +32,7 @@ Sends a deployment notification to a configured webhook endpoint.
 |  <a name="input_commit-sha"></a>[commit-sha](#input_commit-sha)   | string |  false   |    `"${{ github.sha }}"`     |                              Commit SHA                              |
 |           <a name="input_repo"></a>[repo](#input_repo)            | string |  false   | `"${{ github.repository }}"` |                       Repository (owner/repo)                        |
 | <a name="input_webhook-key"></a>[webhook-key](#input_webhook-key) | string |   true   |                              | Webhook authentication key (pass org secret GITDAILIES_WEBHOOK_KEY)  |
-| <a name="input_webhook-url"></a>[webhook-url](#input_webhook-url) | string |   true   |                              |    Webhook endpoint URL (pass org secret GITDAILIES_WEBHOOK_URL)     |
+| <a name="input_webhook-url"></a>[webhook-url](#input_webhook-url) | string |   true   |                              |   Webhook endpoint URL (pass org variable GITDAILIES_WEBHOOK_URL)    |
 
 <!-- AUTO-DOC-INPUT:END -->
 
