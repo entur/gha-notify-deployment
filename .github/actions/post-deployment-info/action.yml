@@ -1,12 +1,12 @@
 name: "Post Deployment Info"
-description: "Sends a deployment notification to a configured webhook endpoint"
+description: "Sends a deployment notification to a configured webhook endpoint."
 
 inputs:
   webhook-url:
-    description: "Webhook endpoint URL (pass org secret WEBHOOK_URL)"
+    description: "Webhook endpoint URL (pass org secret GITDAILIES_WEBHOOK_URL)"
     required: true
   webhook-key:
-    description: "Webhook authentication key (pass org secret WEBHOOK_KEY)"
+    description: "Webhook authentication key (pass org secret GITDAILIES_WEBHOOK_KEY)"
     required: true
   repo:
     description: "Repository (owner/repo)"
@@ -20,9 +20,6 @@ inputs:
     description: "Commit SHA"
     required: false
     default: ${{ github.sha }}
-  dummy:
-    description: "Dummy input to trigger workflow dispatch"
-    required: false
 
 runs:
   using: "composite"

@@ -2,7 +2,9 @@
 
 ## Usage
 
-Sends a deployment notification to a configured webhook endpoint after a successful deployment.
+<!-- AUTO-DOC-DESCRIPTION:START - Do not remove or modify this section -->
+
+<!-- AUTO-DOC-DESCRIPTION:END -->
 
 ```yaml
 - name: Post deployment info
