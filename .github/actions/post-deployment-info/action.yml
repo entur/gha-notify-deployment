@@ -1,11 +1,11 @@
 name: "Post Deployment Info"
-description: "Sends a deployment notification to a configured webhook endpoint."
+description: "Sends a deployment notification to configured webhooks."
 
 inputs:
-  webhook-url:
+  gitdailies-url:
     description: "Webhook endpoint URL (pass org variable GITDAILIES_WEBHOOK_URL)"
     required: true
-  webhook-key:
+  gitdailies-key:
     description: "Webhook authentication key (pass org secret GITDAILIES_WEBHOOK_KEY)"
     required: true
   repo:
@@ -24,26 +24,35 @@ inputs:
 runs:
   using: "composite"
   steps:
-    - name: Send deployment notification
+    - name: Notify GitDailies
+      continue-on-error: true
       shell: bash
       env:
-        WEBHOOK_URL: ${{ inputs.webhook-url }}
-        WEBHOOK_KEY: ${{ inputs.webhook-key }}
+        GITDAILIES_URL: ${{ inputs.gitdailies-url }}
+        GITDAILIES_KEY: ${{ inputs.gitdailies-key }}
         REPO: ${{ inputs.repo }}
         BRANCH: ${{ inputs.branch }}
         COMMIT_SHA: ${{ inputs.commit-sha }}
-      run: |
-        payload=$(jq -n \
-          --arg kind       "deployed" \
-          --arg repo       "$REPO" \
-          --arg branch     "$BRANCH" \
-          --arg commitSHA  "$COMMIT_SHA" \
-          '{kind: $kind, repo: $repo, branch: $branch, commitSHA: $commitSHA}')
+      run: ${github.action_path}/bash/notify_gitdailies.sh
 
-        response=$(curl -sS -w --max-time 10 "\nHTTP status: %{http_code}" -X POST \
-          -H "Content-Type: application/json" \
-          -H "webhook-key: $WEBHOOK_KEY" \
-          -d "$payload" \
-          "$WEBHOOK_URL" 2>&1) || true
+    - name: Notify Grafana Cloud of deployment
+      continue-on-error: true
+      shell: bash
+      env:
+        GRAFANA_URL: ${{ inputs.grafana-url }}
+        GRAFANA_API_TOKEN: ${{ inputs.grafana-key }}
+        REPO: ${{ inputs.repo }}
+        BRANCH: ${{ inputs.branch }}
+        COMMIT_SHA: ${{ inputs.commit-sha }}
+      run: ${github.action_path}/bash/grafana_notification.sh
 
-        echo "$response"
+    - name: Notify Pagerduty of deployment
+      continue-on-error: true
+      shell: bash
+      run: ${github.action_path}/bash/pagerduty_notification.sh
+
+    - name: Check for curl errors
+      if: always()
+      continue-on-error: true
+      shell: bash
+      run: ${github.action_path}/bash/check_curl_errors.sh
