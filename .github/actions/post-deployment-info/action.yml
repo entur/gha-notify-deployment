@@ -46,11 +46,6 @@ runs:
         COMMIT_SHA: ${{ inputs.commit-sha }}
       run: ${github.action_path}/bash/grafana_notification.sh
 
-    - name: Notify Pagerduty of deployment
-      continue-on-error: true
-      shell: bash
-      run: ${github.action_path}/bash/pagerduty_notification.sh
-
     - name: Check for curl errors
       if: always()
       continue-on-error: true
