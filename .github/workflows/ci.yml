@@ -24,7 +24,7 @@ jobs:
         run: python3 testscripts/mock_server.py &
 
       - name: Run action against mock server
-        uses: ./.github/actions/post-deployment-info
+        uses: ./.github/actions/notify-deployment
         with:
           webhook-url: http://localhost:8080
           webhook-key: test-key
@@ -35,10 +35,10 @@ jobs:
       - name: Validate captured request
         run: python3 testscripts/validate.py
 
-  update-post-deployment-info-doc:
+  update-notify-deployment-doc:
     needs:
       - verify-pr
     uses: ./.github/workflows/auto-doc.yml
     with:
-      action_file: .github/actions/post-deployment-info/action.yml
-      readme_file: README-post-deployment-info.md
+      action_file: .github/actions/notify-deployment/action.yml
+      readme_file: README-notify-deployment.md

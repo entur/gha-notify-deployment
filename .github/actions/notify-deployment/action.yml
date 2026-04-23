@@ -1,4 +1,4 @@
-name: "Post Deployment Info"
+name: "Notify Deployment"
 description: "Sends a deployment notification to configured webhooks."
 
 inputs:
@@ -7,6 +7,12 @@ inputs:
     required: true
   gitdailies-key:
     description: "Webhook authentication key (pass org secret GITDAILIES_WEBHOOK_KEY)"
+    required: true
+  grafana-url:
+    description: "Grafana Cloud API endpoint URL (pass org variable GRAFANA_CLOUD_URL)"
+    required: true
+  grafana-key:
+    description: "Grafana Cloud API token (pass org secret GRAFANA_CLOUD_API_TOKEN)"
     required: true
   repo:
     description: "Repository (owner/repo)"
@@ -20,6 +26,22 @@ inputs:
     description: "Commit SHA"
     required: false
     default: ${{ github.sha }}
+  environment:
+    description: "Deployment environment (prd, tst, dev, sbx)"
+    required: false
+    default: "prd"
+  image:
+    description: "Deployed image name and tag"
+    required: false
+    default: ""
+  deployment-start-time:
+    description: "Deployment start time in ISO 8601 format (e.g., 2024-01-01T12:00:00Z)"
+    required: false
+    default: ""
+  deployment-end-time:
+    description: "Deployment end time in ISO 8601 format (e.g., 2024-01-01T12:30:00Z)"
+    required: false
+    default: ""
 
 runs:
   using: "composite"
@@ -44,6 +66,10 @@ runs:
         REPO: ${{ inputs.repo }}
         BRANCH: ${{ inputs.branch }}
         COMMIT_SHA: ${{ inputs.commit-sha }}
+        START_TIME: ${{ inputs.deployment-start-time }}
+        END_TIME: ${{ inputs.deployment-end-time }}
+        ENVIRONMENT: ${{ inputs.environment }}
+        IMAGE: ${{ inputs.image }}
       run: ${github.action_path}/bash/grafana_notification.sh
 
     - name: Check for curl errors

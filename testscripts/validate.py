@@ -21,7 +21,7 @@ def main():
         errors.append(f"branch: expected 'test-branch', got '{data.get('branch')}'")
     if data.get("commitSHA") != "abc123def456":
         errors.append(f"commitSHA: expected 'abc123def456', got '{data.get('commitSHA')}'")
-    if data.get("webhook-key") != "test-key":
+    if data.get("headers.webhook-key") != "test-key":
         errors.append(f"webhook-key header: expected 'test-key', got '{data.get('webhook-key')}'")
 
     if errors:

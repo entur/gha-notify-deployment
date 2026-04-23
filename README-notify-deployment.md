@@ -1,4 +1,4 @@
-# post-deployment-info
+# notify-deployment
 
 ## Description
 
@@ -10,7 +10,7 @@ Sends a deployment notification to a configured webhook endpoint.
 
 ```yaml
 - name: Post deployment info
-  uses: entur/gha-gitdailies/.github/actions/post-deployment-info
+  uses: entur/gha-gitdailies/.github/actions/notify-deployment
   with:
     # Required
     webhook-url: ${{ secrets.WEBHOOK_URL }}

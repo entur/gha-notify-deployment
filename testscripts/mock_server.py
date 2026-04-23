@@ -12,7 +12,7 @@ class _Handler(http.server.BaseHTTPRequestHandler):
         '''Handle incoming POST requests by capturing the payload and headers.'''
         length = int(self.headers.get("Content-Length", 0))
         body = json.loads(self.rfile.read(length))
-        body["webhook-key"] = self.headers.get("webhook-key", "")
+        body["headers"] = dict(self.headers)
         self.send_response(200)
         self.end_headers()
         with open("captured.json", "w", encoding="UTF-8") as f:
@@ -21,4 +21,4 @@ class _Handler(http.server.BaseHTTPRequestHandler):
 
 
 if __name__ == "__main__":
-    http.server.HTTPServer(("", 8080), _Handler).serve_forever()
+    http.server.HTTPServer(("", 8081), _Handler).serve_forever()

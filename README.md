@@ -8,4 +8,4 @@ GitHub Actions for [gitdailies](https://gitdailies.com).
 
 | Action | Description |
 |--------|-------------|
-| [post-deployment-info](.github/actions/post-deployment-info/action.yml) | Sends a deployment notification to the gitdailies webhook endpoint. See [README-post-deployment-info.md](README-post-deployment-info.md) for usage. |
+| [notify-deployment](.github/actions/notify-deployment/action.yml) | Sends a deployment notification to the gitdailies webhook endpoint. See [README-notify-deployment.md](README-notify-deployment.md) for usage. |
