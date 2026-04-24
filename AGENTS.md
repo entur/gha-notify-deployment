@@ -12,6 +12,6 @@ For Entur AI and agent standards, see https://github.com/entur/ai.
 
 **Auto-generated documentation**: `README-notify-deployment.md` is regenerated automatically from `action.yml` by the `auto-doc` workflow on every merge to main. Do not manually edit the `AUTO-DOC-*` sections in that file — edit `action.yml` instead.
 
-**Testing**: Tests use a local mock HTTP server (`testscripts/mock_server.py`) that captures the first inbound request to `captured.json`, then `testscripts/validate.py` asserts the payload fields. To add coverage for a new notification target, update both scripts.
+**Testing**: Tests are written in Python with pytest. Run with `poetry run pytest`. Each test starts a real HTTP server on a random local port, runs the target bash script as a subprocess pointed at that server, and asserts on the captured request (method, path, headers, JSON body). To add coverage for a new notification target, add a `tests/test_notify_<target>.py` file following the pattern of the existing test files. The `testscripts/` directory contains older ad-hoc scripts superseded by the pytest suite.
 
 **Commit convention**: This repo uses Conventional Commits (`feat:`, `fix:`, `docs:`, `ci:`, `chore:`, etc.).

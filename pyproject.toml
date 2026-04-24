@@ -1,0 +1,26 @@
+[project]
+name = "gha-notify-deployment"
+version = "0.1.0"
+description = "Test suite for gha-notify-deployment bash scripts"
+authors = [
+    {name = "Tommy Bø",email = "tommy.andre.bo@entur.org"}
+]
+readme = "README.md"
+requires-python = "^3.11"
+dependencies = [
+]
+
+
+[build-system]
+requires = ["poetry-core>=2.0.0,<3.0.0"]
+build-backend = "poetry.core.masonry.api"
+
+[tool.poetry]
+package-mode = false
+
+[tool.poetry.group.dev.dependencies]
+pytest = "^9.0.3"
+
+[tool.pytest.ini_options]
+testpaths = ["tests"]
+
