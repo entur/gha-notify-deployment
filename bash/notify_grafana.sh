@@ -6,7 +6,7 @@ if [[ -z $END_TIME ]]; then
   END_TIME="$(date -u +"%Y-%m-%dT%H:%M:%SZ")"
 fi
 if [[ -z $START_TIME ]]; then
-  START_TIME="$ENTD_TIME"
+  START_TIME="$END_TIME"
 fi
 MESSAGE_TEXT="Deployment of $BRANCH@$COMMIT_SHA"
 if [[ -n $IMAGE ]]; then
