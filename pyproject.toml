@@ -24,3 +24,10 @@ pytest = "^9.0.3"
 [tool.pytest.ini_options]
 testpaths = ["tests"]
 
+[tool.pylint."messages control"]
+disable = [
+    "missing-function-docstring",
+    "missing-class-docstring",
+    "too-few-public-methods",
+    "redefined-outer-name",
+]

@@ -21,6 +21,7 @@ def run_script(env: dict, cwd: Path) -> subprocess.CompletedProcess:
         capture_output=True,
         text=True,
         cwd=str(cwd),
+        check=False,
     )
 
 
