@@ -35,11 +35,11 @@ inputs:
     required: false
     default: ""
   deployment-start-time:
-    description: "Deployment start time in ISO 8601 format (e.g., 2024-01-01T12:00:00Z)"
+    description: "Deployment start time, Epoch in milliseconds"
     required: false
     default: ""
   deployment-end-time:
-    description: "Deployment end time in ISO 8601 format (e.g., 2024-01-01T12:30:00Z)"
+    description: "Deployment end time, Epoch in milliseconds"
     required: false
     default: ""
 

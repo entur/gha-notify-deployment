@@ -9,7 +9,7 @@ payload=$(jq -n \
   --arg commitSHA  "$COMMIT_SHA" \
   '{kind: $kind, repo: $repository, branch: $branch, commitSHA: $commitSHA}')
 
-curl -sSf --max-time 10 -X POST \
+curl -sSf --max-time 5 -X POST \
   -H "Content-Type: application/json" \
   -H "webhook-key: $GITDAILIES_KEY" \
   -d "$payload" \

@@ -10,16 +10,22 @@ Sends a deployment notification to a configured webhook endpoint.
 
 ```yaml
 - name: Post deployment info
-  uses: entur/gha-gitdailies/.github/actions/notify-deployment
+  uses: entur/gha-notify-deployment/.github/actions/notify-deployment@main
   with:
     # Required
-    webhook-url: ${{ secrets.WEBHOOK_URL }}
-    webhook-key: ${{ secrets.WEBHOOK_KEY }}
+    gitdailies-url: ${{ vars.GITDAILIES_WEBHOOK_URL }}
+    gitdailies-key: ${{ secrets.GITDAILIES_WEBHOOK_KEY }}
+    grafana-url: ${{ vars.GRAFANA_CLOUD_URL }}
+    grafana-key: ${{ secrets.GRAFANA_CLOUD_API_TOKEN }}
 
     # Optional – defaults to GitHub context values
-    repo: ${{ github.repository }}       # e.g. "owner/repo"
-    branch: ${{ github.ref_name }}       # e.g. "main"
-    commit-sha: ${{ github.sha }}        # full commit SHA
+    repo: ${{ github.repository }}        # e.g. "owner/repo"
+    branch: ${{ github.ref_name }}        # e.g. "main"
+    commit-sha: ${{ github.sha }}         # full commit SHA
+    environment: "prd"                    # prd, tst, dev, or sbx
+    image: ""                             # deployed image name and tag
+    deployment-start-time: ""            # Epoch in milliseconds for when deployment started
+    deployment-end-time: ""              # Epoch in milliseconds for when deployment ended
 ```
 
 ## Inputs

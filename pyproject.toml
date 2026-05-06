@@ -20,9 +20,19 @@ package-mode = false
 
 [tool.poetry.group.dev.dependencies]
 pytest = "^9.0.3"
+poethepoet = "^0.34.0"
+pylint = "^4.0.5"
+
+[tool.poe.tasks]
+test = "poetry run pytest"
+integration = "poetry run pytest -m integration"
+lint.shell = "poetry run pylint $(git ls-files '*.py')"
 
 [tool.pytest.ini_options]
 testpaths = ["tests"]
+markers = [
+    "integration: marks tests as integration tests (require external services)",
+]
 
 [tool.pylint."messages control"]
 disable = [

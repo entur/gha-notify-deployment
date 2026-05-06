@@ -1,11 +1,11 @@
 ![gitdailies-logo](logo.png)
 
-# gha-gitdailies
+# gha-notify-deployment
 
-GitHub Actions for [gitdailies](https://gitdailies.com).
+GitHub Action for notifying to connected services that a deployment has occured
 
 ## Actions
 
 | Action | Description |
 |--------|-------------|
-| [notify-deployment](.github/actions/notify-deployment/action.yml) | Sends a deployment notification to the gitdailies webhook endpoint. See [README-notify-deployment.md](README-notify-deployment.md) for usage. |
+| [notify-deployment](.github/actions/notify-deployment/action.yml) | Sends a deployment notification to gitdailies and grafana(as annotation). See [README-notify-deployment.md](README-notify-deployment.md) for usage. |
