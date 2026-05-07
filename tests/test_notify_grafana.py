@@ -12,8 +12,8 @@ BASE_ENV = {
     "COMMIT_SHA": "abc123",
     "ENVIRONMENT": "production",
     "GRAFANA_API_TOKEN": "grafana-token",
-    "END_TIME": "2026-01-01T12:00:00Z",
-    "START_TIME": "2026-01-01T11:55:00Z",
+    "END_TIME": "1778150692337",
+    "START_TIME": "1778152550281",
     "IMAGE": "",
 }
 
@@ -65,13 +65,13 @@ class TestPayload:
         server, env, tmp_path = server_env
         run_script(env, tmp_path)
         req = server.captured_requests.get(timeout=5)
-        assert req.body["time"] == "2026-01-01T11:55:00Z"
+        assert req.body["time"] == 1778152550281
 
     def test_sends_end_time(self, server_env):
         server, env, tmp_path = server_env
         run_script(env, tmp_path)
         req = server.captured_requests.get(timeout=5)
-        assert req.body["timeEnd"] == "2026-01-01T12:00:00Z"
+        assert req.body["timeEnd"] == 1778150692337
 
 
 class TestOptionalImage:
@@ -98,11 +98,11 @@ class TestTimeDefaults:
         env["START_TIME"] = ""
         run_script(env, tmp_path)
         req = server.captured_requests.get(timeout=5)
-        assert req.body["timeEnd"].endswith("Z"), "expected a UTC ISO-8601 timestamp"
+        assert isinstance(req.body["timeEnd"], int), "expected a unix timestamp"
 
     def test_start_time_defaults_to_end_time_when_empty(self, server_env):
         server, env, tmp_path = server_env
-        env["END_TIME"] = "2026-01-01T12:00:00Z"
+        env["END_TIME"] = "1778150692337"
         env["START_TIME"] = ""
         run_script(env, tmp_path)
         req = server.captured_requests.get(timeout=5)
