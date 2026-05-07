@@ -18,8 +18,8 @@ payload=$(jq -n \
   --arg repository  "$REPO" \
   --arg environment "$ENVIRONMENT" \
   --arg text        "$MESSAGE_TEXT" \
-  --argjson start_time  $START_TIME \
-  --argjson end_time    $END_TIME \
+  --argjson start_time  "$START_TIME" \
+  --argjson end_time    "$END_TIME" \
   '{time: $start_time, timeEnd: $end_time, tags: [$event, $environment, $repository], text: $text}')
 
 

@@ -55,7 +55,7 @@ runs:
         REPO: ${{ inputs.repo }}
         BRANCH: ${{ inputs.branch }}
         COMMIT_SHA: ${{ inputs.commit-sha }}
-      run: ${github.action_path}/bash/notify_gitdailies.sh
+      run: ${{ github.action_path }}/bash/notify_gitdailies.sh
 
     - name: Notify Grafana Cloud of deployment
       continue-on-error: true
@@ -70,10 +70,10 @@ runs:
         END_TIME: ${{ inputs.deployment-end-time }}
         ENVIRONMENT: ${{ inputs.environment }}
         IMAGE: ${{ inputs.image }}
-      run: ${github.action_path}/bash/notify_grafana.sh
+      run: ${{ github.action_path }}/bash/notify_grafana.sh
 
     - name: Send any errors to Sentry
       if: always()
       continue-on-error: true
       shell: bash
-      run: ${github.action_path}/bash/send_errors_to_sentry.sh
+      run: ${{ github.action_path }}/bash/send_errors_to_sentry.sh
