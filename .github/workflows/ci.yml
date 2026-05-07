@@ -7,7 +7,7 @@ on:
       - main
   pull_request:
   pull_request_review:
-    types: [submitted]
+    types: [ submitted ]
 
 jobs:
   verify-pr:
@@ -19,21 +19,12 @@ jobs:
     runs-on: ubuntu-latest
     steps:
       - uses: actions/checkout@v6
-
-      - name: Start mock HTTP server
-        run: python3 testscripts/mock_server.py &
-
-      - name: Run action against mock server
-        uses: ./.github/actions/notify-deployment
+      - name: Set up Poetry
+        uses: snok/install-poetry@76e04a911780d5b312d89783f7b1cd627778900a # v1.4.1
         with:
-          webhook-url: http://localhost:8080
-          webhook-key: test-key
-          repo: test-org/test-repo
-          branch: test-branch
-          commit-sha: abc123def456
-
-      - name: Validate captured request
-        run: python3 testscripts/validate.py
+          version: "2.1.3"
+      - name: Test bash scripts (with Python)
+        run: poetry run poe test
 
   update-notify-deployment-doc:
     needs:
