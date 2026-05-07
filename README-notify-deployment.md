@@ -4,7 +4,7 @@
 
 <!-- AUTO-DOC-DESCRIPTION:START - Do not remove or modify this section -->
 
-Sends a deployment notification to a configured webhook endpoint.
+Sends a deployment notification to configured webhooks.
 
 <!-- AUTO-DOC-DESCRIPTION:END -->
 
@@ -32,13 +32,19 @@ Sends a deployment notification to a configured webhook endpoint.
 
 <!-- AUTO-DOC-INPUT:START - Do not remove or modify this section -->
 
-|                               INPUT                               |  TYPE  | REQUIRED |           DEFAULT            |                             DESCRIPTION                              |
-|-------------------------------------------------------------------|--------|----------|------------------------------|----------------------------------------------------------------------|
-|        <a name="input_branch"></a>[branch](#input_branch)         | string |  false   |  `"${{ github.ref_name }}"`  |                             Branch name                              |
-|  <a name="input_commit-sha"></a>[commit-sha](#input_commit-sha)   | string |  false   |    `"${{ github.sha }}"`     |                              Commit SHA                              |
-|           <a name="input_repo"></a>[repo](#input_repo)            | string |  false   | `"${{ github.repository }}"` |                       Repository (owner/repo)                        |
-| <a name="input_webhook-key"></a>[webhook-key](#input_webhook-key) | string |   true   |                              | Webhook authentication key (pass org secret GITDAILIES_WEBHOOK_KEY)  |
-| <a name="input_webhook-url"></a>[webhook-url](#input_webhook-url) | string |   true   |                              |   Webhook endpoint URL (pass org variable GITDAILIES_WEBHOOK_URL)    |
+|                                              INPUT                                              |  TYPE  | REQUIRED |           DEFAULT            |                                DESCRIPTION                                |
+|-------------------------------------------------------------------------------------------------|--------|----------|------------------------------|---------------------------------------------------------------------------|
+|                       <a name="input_branch"></a>[branch](#input_branch)                        | string |  false   |  `"${{ github.ref_name }}"`  |                                Branch name                                |
+|                 <a name="input_commit-sha"></a>[commit-sha](#input_commit-sha)                  | string |  false   |    `"${{ github.sha }}"`     |                                Commit SHA                                 |
+|    <a name="input_deployment-end-time"></a>[deployment-end-time](#input_deployment-end-time)    | string |  false   |                              |              Deployment end time, Epoch in <br>milliseconds               |
+| <a name="input_deployment-start-time"></a>[deployment-start-time](#input_deployment-start-time) | string |  false   |                              |             Deployment start time, Epoch in <br>milliseconds              |
+|                <a name="input_environment"></a>[environment](#input_environment)                | string |  false   |           `"prd"`            |               Deployment environment (prd, tst, dev, sbx)                 |
+|           <a name="input_gitdailies-key"></a>[gitdailies-key](#input_gitdailies-key)            | string |   true   |                              |   Webhook authentication key (pass org secret GITDAILIES_WEBHOOK_KEY)     |
+|           <a name="input_gitdailies-url"></a>[gitdailies-url](#input_gitdailies-url)            | string |   true   |                              |     Webhook endpoint URL (pass org variable GITDAILIES_WEBHOOK_URL)       |
+|                <a name="input_grafana-key"></a>[grafana-key](#input_grafana-key)                | string |   true   |                              |    Grafana Cloud API token (pass org secret GRAFANA_CLOUD_API_TOKEN)      |
+|                <a name="input_grafana-url"></a>[grafana-url](#input_grafana-url)                | string |   true   |                              | Grafana Cloud API endpoint URL <br>(pass org variable GRAFANA_CLOUD_URL)  |
+|                         <a name="input_image"></a>[image](#input_image)                         | string |  false   |                              |                        Deployed image name and tag                        |
+|                          <a name="input_repo"></a>[repo](#input_repo)                           | string |  false   | `"${{ github.repository }}"` |                          Repository (owner/repo)                          |
 
 <!-- AUTO-DOC-INPUT:END -->
 
