@@ -23,7 +23,8 @@ Sends a deployment notification to configured webhooks.
     branch: ${{ github.ref_name }}        # e.g. "main"
     commit-sha: ${{ github.sha }}         # full commit SHA
     environment: "prd"                    # prd, tst, dev, or sbx
-    image: ""                             # deployed image name and tag
+    grafana-annotation-text: ""          # image name/tag or deployment identifier e.g. "my-app:1.2"
+    grafana-annotation-tags: ""          # space-separated extra tags for the annotation other than "deployment", repo and environment
     deployment-start-time: ""            # Epoch in milliseconds for when deployment started
     deployment-end-time: ""              # Epoch in milliseconds for when deployment ended
 ```

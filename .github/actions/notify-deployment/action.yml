@@ -30,8 +30,12 @@ inputs:
     description: "Deployment environment (prd, tst, dev, sbx)"
     required: false
     default: "prd"
-  image:
-    description: "Deployed image name and tag"
+  grafana-annotation-text:
+    description: "Text body for the Grafana annotation. For images, use image name and tag. For other types, use something that both identifies the deployment and version."
+    required: false
+    default: ""
+  grafana-annotation-tags:
+    description: "Space-separated extra tags for the Grafana annotation"
     required: false
     default: ""
   deployment-start-time:
@@ -64,12 +68,11 @@ runs:
         GRAFANA_URL: ${{ inputs.grafana-url }}
         GRAFANA_API_TOKEN: ${{ inputs.grafana-key }}
         REPO: ${{ inputs.repo }}
-        BRANCH: ${{ inputs.branch }}
-        COMMIT_SHA: ${{ inputs.commit-sha }}
+        ENVIRONMENT: ${{ inputs.environment }}
+        GRAFANA_ANNOTATION_TEXT: ${{ inputs.grafana-annotation-text }}
+        GRAFANA_ANNOTATION_TAGS: ${{ inputs.grafana-annotation-tags }}
         START_TIME: ${{ inputs.deployment-start-time }}
         END_TIME: ${{ inputs.deployment-end-time }}
-        ENVIRONMENT: ${{ inputs.environment }}
-        IMAGE: ${{ inputs.image }}
       run: ${{ github.action_path }}/../../../bash/notify_grafana.sh
 
     - name: Send any errors to Sentry
