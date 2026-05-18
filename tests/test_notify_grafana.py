@@ -8,13 +8,12 @@ SCRIPT = Path(__file__).parent.parent / "bash" / "notify_grafana.sh"
 
 BASE_ENV = {
     "REPO": "test-org/test-repo",
-    "BRANCH": "main",
-    "COMMIT_SHA": "abc123",
     "ENVIRONMENT": "production",
     "GRAFANA_API_TOKEN": "grafana-token",
     "END_TIME": "1778150692337",
     "START_TIME": "1778152550281",
-    "IMAGE": "",
+    "GRAFANA_ANNOTATION_TEXT": "",
+    "GRAFANA_ANNOTATION_TAGS": "",
 }
 
 
@@ -55,11 +54,12 @@ class TestPayload:
         req = server.captured_requests.get(timeout=5)
         assert "test-org/test-repo" in req.body["tags"]
 
-    def test_message_contains_branch_and_sha(self, server_env):
+    def test_message_contains_annotation_text(self, server_env):
         server, env, tmp_path = server_env
+        env["GRAFANA_ANNOTATION_TEXT"] = "my-app:1.2.3"
         run_script(env, tmp_path)
         req = server.captured_requests.get(timeout=5)
-        assert "main@abc123" in req.body["text"]
+        assert "my-app:1.2.3" in req.body["text"]
 
     def test_sends_start_time(self, server_env):
         server, env, tmp_path = server_env
@@ -74,20 +74,28 @@ class TestPayload:
         assert req.body["timeEnd"] == 1778150692337
 
 
-class TestOptionalImage:
-    def test_image_appended_to_message_when_set(self, server_env):
+class TestAnnotation:
+    def test_annotation_text_sent_as_message(self, server_env):
         server, env, tmp_path = server_env
-        env["IMAGE"] = "my-app:v1.2.3"
+        env["GRAFANA_ANNOTATION_TEXT"] = "my-app:v1.2.3"
         run_script(env, tmp_path)
         req = server.captured_requests.get(timeout=5)
-        assert "image: my-app:v1.2.3" in req.body["text"]
+        assert req.body["text"] == "my-app:v1.2.3"
 
-    def test_image_omitted_from_message_when_not_set(self, server_env):
+    def test_extra_tags_included_when_set(self, server_env):
         server, env, tmp_path = server_env
-        env["IMAGE"] = ""
+        env["GRAFANA_ANNOTATION_TAGS"] = "team-a service-x"
         run_script(env, tmp_path)
         req = server.captured_requests.get(timeout=5)
-        assert "image" not in req.body["text"]
+        assert "team-a" in req.body["tags"]
+        assert "service-x" in req.body["tags"]
+
+    def test_extra_tags_absent_when_not_set(self, server_env):
+        server, env, tmp_path = server_env
+        env["GRAFANA_ANNOTATION_TAGS"] = ""
+        run_script(env, tmp_path)
+        req = server.captured_requests.get(timeout=5)
+        assert req.body["tags"] == ["deployment", "test-org/test-repo", "production"]
 
 
 class TestTimeDefaults:

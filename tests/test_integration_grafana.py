@@ -25,10 +25,9 @@ def test_sends_annotation_to_grafana(script_env, tmp_path):
     env = {
         **script_env,
         "REPO": "entur/gha-notify-deployment",
-        "BRANCH": "main",
-        "COMMIT_SHA": "integration-test",
         "ENVIRONMENT": "development",
-        "IMAGE": "",
+        "GRAFANA_ANNOTATION_TEXT": "integration-test",
+        "GRAFANA_ANNOTATION_TAGS": "",
         "START_TIME": "",
         "END_TIME": "",
         "GRAFANA_API_TOKEN": os.environ["REAL_GRAFANA_API_TOKEN"],
