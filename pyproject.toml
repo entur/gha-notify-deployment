@@ -24,7 +24,7 @@ poethepoet = "^0.34.0"
 pylint = "^4.0.5"
 
 [tool.poe.tasks]
-test = "poetry run pytest"
+test = "poetry run pytest -m 'not integration'"
 integration = "poetry run pytest -m integration"
 lint.shell = "poetry run pylint $(git ls-files '*.py')"
 
