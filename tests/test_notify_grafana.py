@@ -10,8 +10,8 @@ BASE_ENV = {
     "REPO": "test-org/test-repo",
     "ENVIRONMENT": "production",
     "GRAFANA_API_TOKEN": "grafana-token",
-    "END_TIME": "1778150692337",
-    "START_TIME": "1778152550281",
+    "START_TIME": "1778150692337",
+    "END_TIME": "1778152550281",
     "GRAFANA_ANNOTATION_TEXT": "",
     "GRAFANA_ANNOTATION_TAGS": "",
 }
@@ -65,13 +65,13 @@ class TestPayload:
         server, env, tmp_path = server_env
         run_script(env, tmp_path)
         req = server.captured_requests.get(timeout=5)
-        assert req.body["time"] == 1778152550281
+        assert req.body["time"] == 1778150692337
 
     def test_sends_end_time(self, server_env):
         server, env, tmp_path = server_env
         run_script(env, tmp_path)
         req = server.captured_requests.get(timeout=5)
-        assert req.body["timeEnd"] == 1778150692337
+        assert req.body["timeEnd"] == 1778152550281
 
 
 class TestAnnotation:

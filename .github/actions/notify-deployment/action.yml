@@ -33,7 +33,7 @@ inputs:
   grafana-annotation-text:
     description: "Text body for the Grafana annotation. For images, use image name and tag. For other types, use something that both identifies the deployment and version."
     required: false
-    default: ""
+    default: "deployment of ${{ github.repository }}:${{ github.sha }}"
   grafana-annotation-tags:
     description: "Space-separated extra tags for the Grafana annotation"
     required: false

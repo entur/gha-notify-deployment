@@ -9,7 +9,7 @@ Sends a deployment notification to configured webhooks.
 <!-- AUTO-DOC-DESCRIPTION:END -->
 
 ```yaml
-- name: Post deployment info
+- name: Notify deployment
   uses: entur/gha-notify-deployment/.github/actions/notify-deployment@main
   with:
     # Required

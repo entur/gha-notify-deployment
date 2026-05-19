@@ -2,19 +2,18 @@
 
 set -eEuo pipefail
 
-if [[ -z $END_TIME ]]; then
+if [[ -z "${END_TIME:-}" ]]; then
   END_TIME="$(date -u +%s%3N)"
 fi
-if [[ -z $START_TIME ]]; then
+if [[ -z "${START_TIME:-}" ]]; then
   START_TIME="$END_TIME"
 fi
-TAGS=("test" "this")
 payload=$(jq -n \
   --arg event       "deployment" \
   --arg repository  "$REPO" \
   --arg environment "$ENVIRONMENT" \
   --arg text        "$GRAFANA_ANNOTATION_TEXT" \
-  --arg tags        "$GRAFANA_ANNOTATION_TAGS" \
+  --arg tags        "${GRAFANA_ANNOTATION_TAGS:-}" \
   --argjson start_time  "$START_TIME" \
   --argjson end_time    "$END_TIME" \
   '{time: $start_time, timeEnd: $end_time, tags: ([$event, $repository, $environment] + ($tags | split(" ") | map(select(length > 0)))), text: $text}')

@@ -2,7 +2,7 @@
 
 # gha-notify-deployment
 
-GitHub Action for notifying to connected services that a deployment has occured
+GitHub Action for notifying to connected services that a deployment has occurred
 
 ## Actions
 
