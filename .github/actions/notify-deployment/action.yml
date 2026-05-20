@@ -1,0 +1,82 @@
+name: "Notify Deployment"
+description: "Sends a deployment notification to configured webhooks."
+
+inputs:
+  gitdailies-url:
+    description: "Webhook endpoint URL (pass org variable GITDAILIES_WEBHOOK_URL)"
+    required: true
+  gitdailies-key:
+    description: "Webhook authentication key (pass org secret GITDAILIES_WEBHOOK_KEY)"
+    required: true
+  grafana-url:
+    description: "Grafana Cloud API endpoint URL (pass org variable GRAFANA_CLOUD_URL)"
+    required: true
+  grafana-key:
+    description: "Grafana Cloud API token (pass org secret GRAFANA_CLOUD_API_TOKEN)"
+    required: true
+  repo:
+    description: "Repository (owner/repo)"
+    required: false
+    default: ${{ github.repository }}
+  branch:
+    description: "Branch name"
+    required: false
+    default: ${{ github.ref_name }}
+  commit-sha:
+    description: "Commit SHA"
+    required: false
+    default: ${{ github.sha }}
+  environment:
+    description: "Deployment environment (prd, tst, dev, sbx)"
+    required: false
+    default: "prd"
+  grafana-annotation-text:
+    description: "Text body for the Grafana annotation. For images, use image name and tag. For other types, use something that both identifies the deployment and version."
+    required: false
+    default: "deployment of ${{ github.repository }}:${{ github.sha }}"
+  grafana-annotation-tags:
+    description: "Space-separated extra tags for the Grafana annotation"
+    required: false
+    default: ""
+  deployment-start-time:
+    description: "Deployment start time, Epoch in milliseconds"
+    required: false
+    default: ""
+  deployment-end-time:
+    description: "Deployment end time, Epoch in milliseconds"
+    required: false
+    default: ""
+
+runs:
+  using: "composite"
+  steps:
+    - name: Notify GitDailies
+      continue-on-error: true
+      shell: bash
+      env:
+        GITDAILIES_URL: ${{ inputs.gitdailies-url }}
+        GITDAILIES_KEY: ${{ inputs.gitdailies-key }}
+        REPO: ${{ inputs.repo }}
+        BRANCH: ${{ inputs.branch }}
+        COMMIT_SHA: ${{ inputs.commit-sha }}
+      run: ${{ github.action_path }}/../../../bash/notify_gitdailies.sh
+
+    - name: Notify Grafana Cloud of deployment
+      continue-on-error: true
+      shell: bash
+      env:
+        GRAFANA_URL: ${{ inputs.grafana-url }}
+        GRAFANA_API_TOKEN: ${{ inputs.grafana-key }}
+        REPO: ${{ inputs.repo }}
+        ENVIRONMENT: ${{ inputs.environment }}
+        GRAFANA_ANNOTATION_TEXT: ${{ inputs.grafana-annotation-text }}
+        GRAFANA_ANNOTATION_TAGS: ${{ inputs.grafana-annotation-tags }}
+        START_TIME: ${{ inputs.deployment-start-time }}
+        END_TIME: ${{ inputs.deployment-end-time }}
+      run: ${{ github.action_path }}/../../../bash/notify_grafana.sh
+
+    - name: Send any errors to Sentry
+      if: always()
+      continue-on-error: true
+      shell: bash
+      run: ${{ github.action_path }}/../../../bash/send_errors_to_sentry.sh

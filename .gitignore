@@ -1,0 +1,12 @@
+# Python
+.venv/
+__pycache__/
+*.pyc
+.pytest_cache/
+
+# Local dev environment
+.envrc
+.vscode/
+
+# Error logs produced by bash scripts during testing
+deployment_notification_errors.log

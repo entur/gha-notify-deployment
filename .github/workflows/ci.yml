@@ -15,30 +15,31 @@ jobs:
     if: ${{ github.event_name == 'pull_request' }}
     uses: entur/gha-meta/.github/workflows/verify-pr.yml@v1
 
+  versions:
+    uses: ./.github/workflows/tools-versions.yml
+
   test:
+    needs: versions
     runs-on: ubuntu-latest
     steps:
       - uses: actions/checkout@v6
-
-      - name: Start mock HTTP server
-        run: python3 testscripts/mock_server.py &
-
-      - name: Run action against mock server
-        uses: ./.github/actions/post-deployment-info
+      - name: Set up Python
+        uses: actions/setup-python@v5
         with:
-          webhook-url: http://localhost:8080
-          webhook-key: test-key
-          repo: test-org/test-repo
-          branch: test-branch
-          commit-sha: abc123def456
+          python-version: ${{ needs.versions.outputs.python }}
+      - name: Set up Poetry
+        uses: snok/install-poetry@76e04a911780d5b312d89783f7b1cd627778900a # v1.4.1
+        with:
+          version: ${{ needs.versions.outputs.poetry }}
+      - name: Install dependencies
+        run: poetry install --no-interaction --no-root --with dev
+      - name: Test bash scripts (with Python)
+        run: poetry run poe test
 
-      - name: Validate captured request
-        run: python3 testscripts/validate.py
-
-  update-post-deployment-info-doc:
+  update-notify-deployment-doc:
     needs:
       - verify-pr
     uses: ./.github/workflows/auto-doc.yml
     with:
-      action_file: .github/actions/post-deployment-info/action.yml
-      readme_file: README-post-deployment-info.md
+      action_file: .github/actions/notify-deployment/action.yml
+      readme_file: README-notify-deployment.md

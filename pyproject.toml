@@ -1,0 +1,43 @@
+[project]
+name = "gha-notify-deployment"
+version = "0.1.0"
+description = "Test suite for gha-notify-deployment bash scripts"
+authors = [
+    {name = "Tommy Bø",email = "tommy.andre.bo@entur.org"}
+]
+readme = "README.md"
+requires-python = ">3.14,<4.0"
+dependencies = [
+]
+
+
+[build-system]
+requires = ["poetry-core>=2.0.0,<3.0.0"]
+build-backend = "poetry.core.masonry.api"
+
+[tool.poetry]
+package-mode = false
+
+[tool.poetry.group.dev.dependencies]
+pytest = "^9.0.3"
+poethepoet = "^0.34.0"
+pylint = "^4.0.5"
+
+[tool.poe.tasks]
+test = "poetry run pytest -m 'not integration'"
+integration = "poetry run pytest -m integration"
+lint.shell = "poetry run pylint $(git ls-files '*.py')"
+
+[tool.pytest.ini_options]
+testpaths = ["tests"]
+markers = [
+    "integration: marks tests as integration tests (require external services)",
+]
+
+[tool.pylint."messages control"]
+disable = [
+    "missing-function-docstring",
+    "missing-class-docstring",
+    "too-few-public-methods",
+    "redefined-outer-name",
+]
