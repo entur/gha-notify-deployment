@@ -1,4 +1,4 @@
-name: ci
+name: CI
 run-name: Verifying commit ${{ github.sha }} on branch ${{ github.ref_name }}
 
 on:
@@ -10,11 +10,6 @@ on:
     types: [submitted]
 
 jobs:
-  verify-pr:
-    name: Verify PR
-    if: ${{ github.event_name == 'pull_request' }}
-    uses: entur/gha-meta/.github/workflows/verify-pr.yml@v1
-
   versions:
     uses: ./.github/workflows/tools-versions.yml
 
@@ -22,9 +17,9 @@ jobs:
     needs: versions
     runs-on: ubuntu-latest
     steps:
-      - uses: actions/checkout@v6
+      - uses: actions/checkout@9c091bb21b7c1c1d1991bb908d89e4e9dddfe3e0 # v7.0.0
       - name: Set up Python
-        uses: actions/setup-python@v6
+        uses: actions/setup-python@a309ff8b426b58ec0e2a45f0f869d46889d02405 # v6.2.0
         with:
           python-version: ${{ needs.versions.outputs.python }}
       - name: Set up Poetry
@@ -38,8 +33,21 @@ jobs:
 
   update-notify-deployment-doc:
     needs:
-      - verify-pr
+      - versions
     uses: ./.github/workflows/auto-doc.yml
     with:
       action_file: .github/actions/notify-deployment/action.yml
       readme_file: README-notify-deployment.md
+
+  ci:
+    name: CI
+    needs: [versions, test, update-notify-deployment-doc]
+    if: ${{ !cancelled() }}
+    runs-on: ubuntu-24.04
+    steps:
+      - name: All required CI jobs passed
+        run: |
+          if [[ "${{ contains(needs.*.result, 'failure') }}" == "true" ]]; then
+            echo "::error::A required CI job failed"
+            exit 1
+          fi
