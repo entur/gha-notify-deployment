@@ -23,4 +23,4 @@ jobs:
         uses: actions/checkout@v6
       - name: Parse .tool-versions
         id: parse_tool_versions
-        uses: paulo-ferraz-oliveira/parse-tool-versions@534819f70c0c04d788b49dafc29c8117901277bd # v1.0.3
+        uses: paulo-ferraz-oliveira/parse-tool-versions@62d3a3f201712424ce3ed6723eeb97da195dc1a6 # v1.1.0
