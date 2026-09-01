@@ -1,5 +1,12 @@
 # Changelog
 
+## [1.1.0](https://github.com/entur/gha-notify-deployment/compare/v1.0.0...v1.1.0) (2026-09-01)
+
+
+### Features
+
+* adding environment to GitDailies ([#14](https://github.com/entur/gha-notify-deployment/issues/14)) ([421f538](https://github.com/entur/gha-notify-deployment/commit/421f538ed3622efd6837edc501c9d87534ec5c5f))
+
 ## 1.0.0 (2026-05-20)
 
 
