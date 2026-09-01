@@ -9,6 +9,7 @@ SCRIPT = Path(__file__).parent.parent / "bash" / "notify_gitdailies.sh"
 BASE_ENV = {
     "REPO": "test-org/test-repo",
     "BRANCH": "main",
+    "ENVIRONMENT": "prd",
     "COMMIT_SHA": "abc123",
     "GITDAILIES_KEY": "secret-key",
 }
@@ -39,6 +40,7 @@ class TestPayload:
         run_script(env, tmp_path)
         req = server.captured_requests.get(timeout=5)
         assert req.body["repo"] == "test-org/test-repo"
+        assert req.body["environment"] == "prd"
 
     def test_sends_correct_branch(self, server_env):
         server, env, tmp_path = server_env

@@ -5,9 +5,10 @@ set -eEuo pipefail
 payload=$(jq -n \
   --arg kind       "deployed" \
   --arg repository "$REPO" \
+  --arg environment "$ENVIRONMENT" \
   --arg branch     "$BRANCH" \
   --arg commitSHA  "$COMMIT_SHA" \
-  '{kind: $kind, repo: $repository, branch: $branch, commitSHA: $commitSHA}')
+  '{kind: $kind, repo: $repository, environment: $environment, branch: $branch, commitSHA: $commitSHA}')
 
 curl -sSf --max-time 5 -X POST \
   -H "Content-Type: application/json" \

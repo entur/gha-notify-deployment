@@ -57,6 +57,7 @@ runs:
         GITDAILIES_URL: ${{ inputs.gitdailies-url }}
         GITDAILIES_KEY: ${{ inputs.gitdailies-key }}
         REPO: ${{ inputs.repo }}
+        ENVIRONMENT: ${{ inputs.environment }}
         BRANCH: ${{ inputs.branch }}
         COMMIT_SHA: ${{ inputs.commit-sha }}
       run: ${{ github.action_path }}/../../../bash/notify_gitdailies.sh
